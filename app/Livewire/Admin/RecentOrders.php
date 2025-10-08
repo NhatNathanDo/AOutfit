@@ -11,11 +11,14 @@ class RecentOrders extends Component
     use WithPagination;
 
     public string $statusFilter = 'all';
-    // Livewire v3 no longer exposes an implicit $page property via the trait, define it explicitly
-    public int $page = 1;
+    public int $page = 1; // explicit page property
+    public string $sortField = 'created_at';
+    public string $sortDirection = 'desc';
 
     protected $queryString = [
-        'statusFilter' => ['except' => 'all']
+        'statusFilter' => ['except' => 'all'],
+        'sortField' => ['except' => 'created_at'],
+        'sortDirection' => ['except' => 'desc']
     ];
 
     public function updatingStatusFilter(): void
@@ -45,6 +48,20 @@ class RecentOrders extends Component
         if ($this->statusFilter !== 'all') {
             $data = array_values(array_filter($data, fn($o) => $o['status'] === $this->statusFilter));
         }
+        // basic sort
+        usort($data, function($a, $b) {
+            $field = $this->sortField;
+            $valA = $a[$field];
+            $valB = $b[$field];
+            // ensure numeric compare if possible
+            if (is_numeric(str_replace(['ORD-','$'], '', $valA)) && is_numeric(str_replace(['ORD-','$'], '', $valB))) {
+                $valA = (float) filter_var($valA, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $valB = (float) filter_var($valB, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            }
+            $result = $valA <=> $valB;
+            return $this->sortDirection === 'asc' ? $result : -$result;
+        });
+
         $perPage = 8;
         $page = $this->page;
         $slice = array_slice($data, ($page-1)*$perPage, $perPage);
@@ -52,6 +69,17 @@ class RecentOrders extends Component
             'path' => request()->url(),
             'query' => request()->query(),
         ]);
+    }
+
+    public function sortBy(string $field): void
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+        $this->resetPage();
     }
 
     public function setStatus(string $status): void

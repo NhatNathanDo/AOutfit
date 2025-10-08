@@ -9,4 +9,5 @@
 @plugin "flyonui" {
     themes: all;
 }
+@plugin "@iconify/tailwind4";
 @import "./../../node_modules/flyonui/variants.css";

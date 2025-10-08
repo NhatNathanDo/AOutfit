@@ -13,7 +13,7 @@ class DashboardComponentsTest extends TestCase
     {
     Livewire::test(\App\Livewire\Admin\StatCards::class)
             ->assertSee('Thống kê')
-            ->assertSee('New Users');
+            ->assertSee('New Users'); // giữ tạm nếu label vẫn English; đổi khi có bản dịch
     }
 
     /** @test */

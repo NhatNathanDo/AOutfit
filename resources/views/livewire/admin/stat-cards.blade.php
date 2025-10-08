@@ -9,17 +9,26 @@
     </div>
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         @foreach($this->stats as $stat)
-            <div class="card bg-base-100 shadow hover:shadow-lg transition">
-                <div class="card-body p-4">
+            <div class="group relative card bg-base-100 shadow hover:shadow-xl transition ring-1 ring-base-200/60 hover:ring-primary/40">
+                <div class="card-body p-4 gap-3">
                     <div class="flex items-start justify-between">
-                        <div>
-                            <p class="text-sm text-base-content/70">{{ $stat['label'] }}</p>
-                            <p class="text-2xl font-bold mt-1">{{ $stat['value'] }}</p>
+                        <div class="space-y-1">
+                            <p class="text-[11px] uppercase tracking-wide text-base-content/50 font-medium">{{ $stat['label'] }}</p>
+                            <p class="text-2xl font-semibold leading-none">{{ $stat['value'] }}</p>
                         </div>
-                        <span class="{{ $stat['icon'] }} text-primary size-6"></span>
+                        <div class="flex flex-col items-end gap-2">
+                            <span class="{{ $stat['icon'] }} size-6 text-primary inline-block"></span>
+                            <span class="badge badge-success badge-xs font-normal">{{ $stat['delta'] }}</span>
+                        </div>
                     </div>
-                    <div class="mt-2 text-xs text-success">{{ $stat['delta'] }}</div>
+                    <div class="h-10 -mb-2" x-data="{points: Array.from({length:16},()=>Math.random()*100)}">
+                        <svg viewBox="0 0 100 30" class="w-full h-full overflow-visible">
+                            <polyline :points="points.map((p,i)=> `${(i/(points.length-1))*100},${30-(p/100)*30}`).join(' ')" fill="none" stroke="currentColor" stroke-width="2" class="text-primary/60 group-hover:text-primary"></polyline>
+                            <polyline :points="points.map((p,i)=> `${(i/(points.length-1))*100},${30-(p/100)*30}`).join(' ')" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" class="text-primary/10"></polyline>
+                        </svg>
+                    </div>
                 </div>
+                <div class="absolute inset-0 rounded-xl pointer-events-none opacity-0 group-hover:opacity-100 bg-gradient-to-br from-primary/5 via-transparent"></div>
             </div>
         @endforeach
     </div>
