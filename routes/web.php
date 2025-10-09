@@ -20,7 +20,12 @@ Route::get('/', function () {
 
 // Product CRUD routes under admin prefix
 Route::prefix('admin')->group(function () {
-    Route::get('products', [ProductController::class, 'index'])->name('admin.products.index');
+    // Page
+    Route::get('products', [ProductController::class, 'page'])->name('admin.products.page');
+    // Create page
+    Route::get('products/create', [ProductController::class, 'create'])->name('admin.products.create');
+    // Data (JSON)
+    Route::get('products/list', [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('products/{id}', [ProductController::class, 'show'])->name('admin.products.show');
     Route::post('products', [ProductController::class, 'store'])->name('admin.products.store');
     Route::match(['put', 'patch'], 'products/{id}', [ProductController::class, 'update'])->name('admin.products.update');

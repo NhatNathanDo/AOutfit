@@ -5,11 +5,27 @@ namespace App\Modules\Products\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Modules\Products\Service\ProductService;
+use App\Modules\Brand\Models\Brand;
+use App\Modules\Category\Models\Category;
 
 class ProductController extends Controller
 {
     public function __construct(private ProductService $service)
     {
+    }
+
+    // Render admin page for products
+    public function page()
+    {
+        $products = $this->service->list([], null);
+        return view('admin.pages.products.data', compact('products'));
+    }
+
+    public function create()
+    {
+        $brands = Brand::query()->orderBy('name')->get(['id','name']);
+        $categories = Category::query()->orderBy('name')->get(['id','name']);
+        return view('admin.pages.products.create', compact('brands', 'categories'));
     }
 
     // Display a listing of the products.
@@ -41,7 +57,11 @@ class ProductController extends Controller
 
         $product = $this->service->create($validated);
 
-        return response()->json($product, 201);
+        if ($request->expectsJson() || $request->wantsJson()) {
+            return response()->json($product, 201);
+        }
+
+        return redirect()->route('admin.products.page')->with('success', 'Tạo sản phẩm thành công');
     }
 
     // Display the specified product.
@@ -71,13 +91,20 @@ class ProductController extends Controller
 
         $product = $this->service->update($id, $validated);
 
-        return response()->json($product);
+        if ($request->expectsJson() || $request->wantsJson()) {
+            return response()->json($product);
+        }
+
+        return redirect()->route('admin.products.page')->with('success', 'Cập nhật sản phẩm thành công');
     }
 
     // Remove the specified product from storage.
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $this->service->delete($id);
-        return response()->json(null, 204);
+        if ($request->expectsJson() || $request->wantsJson()) {
+            return response()->json(null, 204);
+        }
+        return redirect()->route('admin.products.page')->with('success', 'Đã xóa sản phẩm');
     }
 }

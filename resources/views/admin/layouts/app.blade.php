@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Admin Dashboard')</title>
     <meta name="color-scheme" content="light dark">
@@ -69,7 +70,7 @@
                 <li class="text-base-content/50 mt-2.5 p-2 text-xs uppercase">Quản lý</li>
                 <!-- Content Performance -->
                 <li>
-                    <a href="#" class="px-2">
+                    <a href="{{ route('admin.products.page') }}" class="px-2">
                     <span class="icon-[tabler--shirt] size-4.5"></span>
                         Sản phẩm
                     </a>
@@ -83,7 +84,7 @@
                 </li>
                 <!-- Engagement Metrics -->
                 <li>
-                    <a href="#" class="menu-active px-2">
+                    <a href="#" class="px-2">
                     <span class="icon-[tabler--category] size-4.5"></span>
                         Danh mục
                     </a>
@@ -187,6 +188,8 @@
         <!-- ---------- END FOOTER CONTENT ---------- -->
         </div>
     </div>
-        <script src="../node_modules/flyonui/flyonui.js"></script>
+        {{-- <script src="../node_modules/flyonui/flyonui.js"></script>
+        <script src="../path/to/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="../path/to/vendor/datatables.net/js/dataTables.min.js"></script> --}}
     </body>
 </html>
