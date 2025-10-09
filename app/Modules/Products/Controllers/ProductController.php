@@ -28,6 +28,14 @@ class ProductController extends Controller
         return view('admin.pages.products.create', compact('brands', 'categories'));
     }
 
+    public function edit(string $id)
+    {
+        $product = $this->service->get($id);
+        $brands = Brand::query()->orderBy('name')->get(['id','name']);
+        $categories = Category::query()->orderBy('name')->get(['id','name']);
+        return view('admin.pages.products.edit', compact('product','brands','categories'));
+    }
+
     // Display a listing of the products.
     public function index(Request $request)
     {

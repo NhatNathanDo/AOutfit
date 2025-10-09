@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ theme: localStorage.getItem('theme') || 'light', toggle(){ this.theme = this.theme==='light' ? 'dark' : 'light'; localStorage.setItem('theme', this.theme); document.documentElement.dataset.theme = this.theme; } }" x-init="document.documentElement.dataset.theme = theme">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Admin Dashboard')</title>
     <meta name="color-scheme" content="light dark">
 
-        <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
 
     </head>
-    <body class="min-h-screen flex flex-col bg-base-200 text-base-content selection:bg-primary/30 selection:text-primary-content">
+    <body class="min-h-screen flex flex-col bg-base-200 text-base-content selection:bg-neutral selection:text-neutral-content">
         <div class="bg-base-200 flex min-h-screen flex-col">
         <!-- ---------- HEADER ---------- -->
         <div class="bg-base-100 sticky top-0 z-50 flex lg:ps-75">
@@ -77,14 +74,14 @@
                 </li>
                 <!-- Audience Insights -->
                 <li>
-                    <a href="#" class="px-2">
+                    <a href="{{ route('admin.brands.page') }}" class="px-2">
                     <span class="icon-[tabler--label] size-4.5"></span>
                         Nhãn hàng
                     </a>
                 </li>
                 <!-- Engagement Metrics -->
                 <li>
-                    <a href="#" class="px-2">
+                    <a href="{{ route('admin.categories.page') }}" class="px-2">
                     <span class="icon-[tabler--category] size-4.5"></span>
                         Danh mục
                     </a>

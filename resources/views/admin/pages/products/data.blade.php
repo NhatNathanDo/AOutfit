@@ -106,9 +106,9 @@
                 <td>{{ optional($p->created_at)->format('d/m/Y H:i') }}</td>
                 <td class="text-right">
                   <div class="join">
-                    <button class="btn btn-circle btn-text btn-sm" title="Sửa">
+                    <a href="{{ route('admin.products.edit', $p->id) }}" class="btn btn-circle btn-text btn-sm" title="Sửa">
                       <span class="icon-[tabler--pencil] size-5"></span>
-                    </button>
+                    </a>
                     <form action="{{ route('admin.products.destroy', $p->id) }}" method="POST" class="inline">
                       @csrf
                       @method('DELETE')
