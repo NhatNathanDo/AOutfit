@@ -12,12 +12,10 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
 
-        <livewire:styles />
     </head>
     <body class="min-h-screen flex flex-col bg-base-200 text-base-content selection:bg-primary/30 selection:text-primary-content">
         <div x-cloak class="fixed top-0 left-0 h-0.5 w-full bg-gradient-to-r from-primary via-secondary to-accent opacity-0" x-show="$store?.loading?.active"></div>
         <main class="flex-1">@yield('content')</main>
         <footer class="py-4 text-center text-xs opacity-60">© {{ date('Y') }} AOutfit Admin</footer>
-        <livewire:scripts />
     </body>
 </html>
