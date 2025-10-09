@@ -4,11 +4,13 @@
  * Created by Reliese Model.
  */
 
-namespace App\Models;
+namespace App\Modules\Products\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use App\Modules\Brand\Models\Brand;
+use App\Modules\Category\Models\Category;
 
 /**
  * Class Product

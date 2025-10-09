@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Modules\Products\Repository\EloquentProductRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +12,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Optionally bind repository concrete for reuse
+        $this->app->bind(EloquentProductRepository::class, fn($app) => new EloquentProductRepository());
     }
 
     /**

@@ -4,10 +4,11 @@
  * Created by Reliese Model.
  */
 
-namespace App\Models;
+namespace App\Modules\Category\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use App\Modules\Products\Models\Product;
 
 /**
  * Class Category
