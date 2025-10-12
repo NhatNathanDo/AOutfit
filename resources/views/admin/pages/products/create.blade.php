@@ -78,8 +78,11 @@
               </select>
             </div>
             <div class="form-control md:col-span-2">
-              <label class="label"><span class="label-text">Mô tả</span></label>
-              <textarea name="description" rows="4" class="textarea textarea-bordered">{{ old('description') }}</textarea>
+              <div class="flex items-center justify-between">
+                <label class="label"><span class="label-text">Mô tả</span></label>
+                <button type="button" id="ai-generate-create" class="btn btn-sm">Viết mô tả bằng AI</button>
+              </div>
+              <textarea name="description" id="description-create" rows="6" class="textarea textarea-bordered">{{ old('description') }}</textarea>
             </div>
             <div class="form-control">
               <label class="label"><span class="label-text">Giá (VND)</span></label>
@@ -124,6 +127,8 @@
     const btn = document.getElementById('select-btn-create');
     const drop = document.getElementById('drop-area-create');
     const preview = document.getElementById('preview-create');
+    const aiBtn = document.getElementById('ai-generate-create');
+    const descEl = document.getElementById('description-create');
 
     function render(files){
       preview.innerHTML = '';
@@ -179,6 +184,42 @@
       if (!dt || !dt.files || !dt.files.length) return;
       input.files = dt.files; // assign files
       render(dt.files);
+    });
+
+    // AI generate description
+    aiBtn?.addEventListener('click', async () => {
+      const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+      const name = document.querySelector('input[name="name"]').value;
+      if (!name) { alert('Vui lòng nhập Tên sản phẩm'); return; }
+      const payload = {
+        name,
+        price: document.querySelector('input[name="price"]').value || null,
+        category: document.querySelector('select[name="category_id"]')?.selectedOptions?.[0]?.text || null,
+        brand: document.querySelector('select[name="brand_id"]')?.selectedOptions?.[0]?.text || null,
+        gender: document.querySelector('select[name="gender"]').value || null,
+        style: document.querySelector('input[name="style"]')?.value || null,
+        color: document.querySelector('input[name="color"]').value || null,
+        material: document.querySelector('input[name="material"]').value || null,
+        images: [], // No URLs yet for local files
+      };
+      aiBtn.disabled = true; aiBtn.classList.add('btn-disabled'); aiBtn.textContent = 'Đang tạo...';
+      try {
+        const res = await fetch('{{ route('admin.products.ai.describe') }}', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok && data.description) {
+          descEl.value = data.description;
+        } else {
+          alert(data.message || 'Không thể tạo mô tả.');
+        }
+      } catch(_) {
+        alert('Có lỗi khi gọi AI.');
+      } finally {
+        aiBtn.disabled = false; aiBtn.classList.remove('btn-disabled'); aiBtn.textContent = 'Viết mô tả bằng AI';
+      }
     });
   })();
 </script>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Modules\Products\Controllers\ProductController;
 use App\Modules\Brand\Controllers\BrandController;
 use App\Modules\Category\Controllers\CategoryController;
+use App\Modules\Products\Controllers\ProductAiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::prefix('admin')->group(function () {
     Route::match(['put', 'patch'], 'products/{id}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
     Route::delete('products/{productId}/images/{imageId}', [ProductController::class, 'destroyImage'])->name('admin.products.images.destroy');
+    Route::post('products/ai/describe', [ProductAiController::class, 'describe'])->name('admin.products.ai.describe');
 
     // Brands
     Route::get('brands', [BrandController::class, 'page'])->name('admin.brands.page');

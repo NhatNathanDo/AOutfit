@@ -99,8 +99,11 @@
               </select>
             </div>
             <div class="form-control md:col-span-2">
-              <label class="label"><span class="label-text">Mô tả</span></label>
-              <textarea name="description" rows="4" class="textarea textarea-bordered">{{ old('description', $product->description) }}</textarea>
+              <div class="flex items-center justify-between">
+                <label class="label"><span class="label-text">Mô tả</span></label>
+                <button type="button" id="ai-generate-edit" class="btn btn-sm">Viết mô tả bằng AI</button>
+              </div>
+              <textarea name="description" id="description-edit" rows="6" class="textarea textarea-bordered">{{ old('description', $product->description) }}</textarea>
             </div>
             <div class="form-control">
               <label class="label"><span class="label-text">Giá (VND)</span></label>
@@ -223,6 +226,55 @@
         }
       } catch (_) {
         alert('Có lỗi khi xóa ảnh');
+      }
+    });
+  })();
+
+  // AI generate on edit
+  (function(){
+    const btn = document.getElementById('ai-generate-edit');
+    const descEl = document.getElementById('description-edit');
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+    btn?.addEventListener('click', async () => {
+      if (!btn) return;
+      const name = document.querySelector('input[name="name"]').value;
+      if (!name) { alert('Vui lòng nhập Tên sản phẩm'); return; }
+      const payload = {
+        name,
+        price: document.querySelector('input[name="price"]').value || null,
+        category: document.querySelector('select[name="category_id"]')?.selectedOptions?.[0]?.text || null,
+        brand: document.querySelector('select[name="brand_id"]')?.selectedOptions?.[0]?.text || null,
+        gender: document.querySelector('select[name="gender"]').value || null,
+  style: document.querySelector('input[name="style"]')?.value || null,
+        color: document.querySelector('input[name="color"]').value || null,
+        material: document.querySelector('input[name="material"]').value || null,
+        images: [
+          @if($product->images)
+            @foreach($product->images as $img)
+              '{{ $img->url }}',
+            @endforeach
+          @endif
+        ],
+      };
+      btn.disabled = true; btn.classList.add('btn-disabled'); btn.textContent = 'Đang tạo...';
+      try {
+        const res = await fetch('{{ route('admin.products.ai.describe') }}', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok && data.description) {
+          descEl.value = data.description;
+        } else {
+          console.error('AI describe error', data);
+          alert(data.message || 'Không thể tạo mô tả.');
+        }
+      } catch(_) {
+        console.error('AI describe exception', _);
+        alert('Có lỗi khi gọi AI.');
+      } finally {
+        btn.disabled = false; btn.classList.remove('btn-disabled'); btn.textContent = 'Viết mô tả bằng AI';
       }
     });
   })();
