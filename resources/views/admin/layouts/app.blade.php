@@ -67,6 +67,12 @@
                 <li class="text-base-content/50 mt-2.5 p-2 text-xs uppercase">Quản lý</li>
                 <!-- Content Performance -->
                 <li>
+                    <a href="{{ route('admin.orders.page') }}" class="px-2">
+                    <span class="icon-[tabler--shopping-bag] size-4.5"></span>
+                        Đơn hàng
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.products.page') }}" class="px-2">
                     <span class="icon-[tabler--shirt] size-4.5"></span>
                         Sản phẩm

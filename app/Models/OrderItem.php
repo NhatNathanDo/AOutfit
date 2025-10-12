@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Modules\Products\Models\Product;
 
 /**
  * Class OrderItem
@@ -26,6 +27,7 @@ class OrderItem extends Model
 {
 	protected $table = 'order_items';
 	public $incrementing = false;
+	protected $keyType = 'string';
 	public $timestamps = false;
 
 	protected $casts = [

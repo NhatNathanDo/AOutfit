@@ -5,6 +5,7 @@ use App\Modules\Products\Controllers\ProductController;
 use App\Modules\Brand\Controllers\BrandController;
 use App\Modules\Category\Controllers\CategoryController;
 use App\Modules\Products\Controllers\ProductAiController;
+use App\Modules\Order\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,13 @@ Route::get('/', function () {
 
 // Product CRUD routes under admin prefix
 Route::prefix('admin')->group(function () {
+    // Orders
+    Route::get('orders', [OrderController::class, 'page'])->name('admin.orders.page');
+    Route::get('orders/list', [OrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('orders/{id}/edit', [OrderController::class, 'edit'])->name('admin.orders.edit');
+    Route::get('orders/{id}/invoice', [OrderController::class, 'invoice'])->name('admin.orders.invoice');
+    Route::get('orders/{id}', [OrderController::class, 'show'])->name('admin.orders.show');
+    Route::match(['put','patch'], 'orders/{id}', [OrderController::class, 'update'])->name('admin.orders.update');
     // Page
     Route::get('products', [ProductController::class, 'page'])->name('admin.products.page');
     // Create page
