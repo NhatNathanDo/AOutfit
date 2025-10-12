@@ -58,7 +58,7 @@
                 <ul class="menu menu-sm gap-1 px-4">
                 <!-- Dashboard -->
                 <li class="mt-2.5">
-                    <a href="#" class="px-2">
+                    <a href="{{ route('admin.dashboard') }}" class="px-2">
                     <span class="icon-[tabler--dashboard] size-4.5"></span>
                     <span class="grow">Dashboard</span>
                     <span class="badge badge-sm badge-primary rounded-full">2</span>
@@ -92,7 +92,7 @@
                         Danh mục
                     </a>
                 </li>
-                <!-- Hashtag Performance -->
+                {{-- <!-- Hashtag Performance -->
                 <li>
                     <a href="#" class="px-2">
                     <span class="icon-[tabler--hash] size-4.5"></span>
@@ -166,7 +166,7 @@
                     </a>
                 </li>
                 </ul>
-            </div>
+            </div> --}}
             </div>
         </div>
         </aside>
