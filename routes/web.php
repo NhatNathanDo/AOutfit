@@ -34,6 +34,7 @@ Route::prefix('admin')->group(function () {
     Route::post('products', [ProductController::class, 'store'])->name('admin.products.store');
     Route::match(['put', 'patch'], 'products/{id}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+    Route::delete('products/{productId}/images/{imageId}', [ProductController::class, 'destroyImage'])->name('admin.products.images.destroy');
 
     // Brands
     Route::get('brands', [BrandController::class, 'page'])->name('admin.brands.page');

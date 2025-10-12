@@ -5,6 +5,7 @@ namespace App\Modules\Products\Repository;
 use App\Modules\Products\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class ProductRepository
 {
@@ -12,8 +13,8 @@ class ProductRepository
     {
         $query = Product::query();
 
-        // Eager load common relations if needed
-        $query->with(['brand', 'category']);
+    // Eager load common relations including images
+    $query->with(['brand', 'category', 'images', 'primaryImage']);
 
         // Filters
         if (!empty($filters['search'])) {
@@ -59,7 +60,7 @@ class ProductRepository
 
     public function findById(string $id): Product
     {
-        return Product::with(['brand', 'category'])->findOrFail($id);
+    return Product::with(['brand', 'category', 'images', 'primaryImage'])->findOrFail($id);
     }
 
     public function create(array $data): Product
@@ -78,8 +79,8 @@ class ProductRepository
                 $product->setAttribute($product->getKeyName(), (string) \Illuminate\Support\Str::uuid());
             }
         }
-        $product->save();
-        return $product->fresh(['brand', 'category']);
+    $product->save();
+    return $product->fresh(['brand', 'category', 'images', 'primaryImage']);
     }
 
     public function update(string $id, array $data): Product
@@ -88,8 +89,8 @@ class ProductRepository
         if (empty($data['slug']) && !empty($data['name'])) {
             $data['slug'] = str($data['name'])->slug('-');
         }
-        $product->update($data);
-        return $product->fresh(['brand', 'category']);
+    $product->update($data);
+    return $product->fresh(['brand', 'category', 'images', 'primaryImage']);
     }
 
     public function delete(string $id): bool

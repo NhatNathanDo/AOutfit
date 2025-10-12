@@ -11,6 +11,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use App\Modules\Brand\Models\Brand;
 use App\Modules\Category\Models\Category;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\CartItem;
+use App\Models\OrderItem;
+use App\Models\OutfitSetItem;
+use App\Models\Recommendation;
+use App\Modules\Products\Models\ProductImage;
 
 /**
  * Class Product
@@ -33,10 +40,11 @@ use App\Modules\Category\Models\Category;
  * 
  * @property Brand $brand
  * @property Category $category
- * @property Collection|CartItem[] $cart_items
- * @property Collection|OrderItem[] $order_items
- * @property Collection|OutfitSetItem[] $outfit_set_items
- * @property Collection|Recommendation[] $recommendations
+ * @property Collection|\App\Models\CartItem[] $cart_items
+ * @property Collection|\App\Models\OrderItem[] $order_items
+ * @property Collection|\App\Models\OutfitSetItem[] $outfit_set_items
+ * @property Collection|\App\Models\Recommendation[] $recommendations
+ * @property Collection|ProductImage[] $images
  *
  * @package App\Models
  */
@@ -44,6 +52,7 @@ class Product extends Model
 {
 	protected $table = 'products';
 	public $incrementing = false;
+	protected $keyType = 'string';
 
 	protected $casts = [
 		'price' => 'float',
@@ -61,7 +70,6 @@ class Product extends Model
 		'style',
 		'color',
 		'material',
-		'image_url',
 		'stock'
 	];
 
@@ -93,5 +101,16 @@ class Product extends Model
 	public function recommendations()
 	{
 		return $this->hasMany(Recommendation::class);
+	}
+
+	// New relations for multiple images
+	public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
+	{
+		return $this->hasMany(ProductImage::class)->orderBy('sort_order')->orderBy('created_at');
+	}
+
+	public function primaryImage(): \Illuminate\Database\Eloquent\Relations\HasOne
+	{
+		return $this->hasOne(ProductImage::class)->where('is_primary', true);
 	}
 }

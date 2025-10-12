@@ -6,6 +6,10 @@ use App\Modules\Products\Models\Product;
 use App\Modules\Products\Repository\ProductRepository;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Arr;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use App\Modules\Products\Models\ProductImage;
 
 class ProductService
 {
@@ -44,7 +48,7 @@ class ProductService
     {
         // Whitelist fields to prevent mass-assignment of unexpected attributes
         $allowed = [
-            'name','slug','category_id','brand_id','description','price','gender','style','color','material','image_url','stock'
+            'name','slug','category_id','brand_id','description','price','gender','style','color','material','stock'
         ];
         $data = Arr::only($data, $allowed);
 
@@ -54,5 +58,41 @@ class ProductService
         }
 
         return $data;
+    }
+
+    /**
+     * Store uploaded images and attach to product.
+     * @param Product $product
+     * @param UploadedFile[] $files
+     * @param string|null $primaryId Temporary client id to mark primary (optional, not used here)
+     * @return Product
+     */
+    public function addImages(Product $product, array $files, ?int $startSort = null): Product
+    {
+        if (empty($files)) return $product->load(['images', 'primaryImage']);
+
+        DB::transaction(function () use ($product, $files, $startSort) {
+            $sort = $startSort ?? ((int) ($product->images()->max('sort_order') ?? 0));
+            foreach ($files as $file) {
+                if (!$file instanceof UploadedFile) continue;
+                $path = $file->store('products/'.$product->id, 'public');
+                $product->images()->create([
+                    'path' => $path,
+                    'is_primary' => false,
+                    'sort_order' => ++$sort,
+                ]);
+            }
+        });
+
+        return $product->fresh(['images', 'primaryImage']);
+    }
+
+    public function setPrimaryImage(Product $product, string $imageId): Product
+    {
+        DB::transaction(function () use ($product, $imageId) {
+            $product->images()->update(['is_primary' => false]);
+            $product->images()->where('id', $imageId)->update(['is_primary' => true]);
+        });
+        return $product->fresh(['images', 'primaryImage']);
     }
 }
