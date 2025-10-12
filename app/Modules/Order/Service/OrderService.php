@@ -2,7 +2,7 @@
 
 namespace App\Modules\Order\Service;
 
-use App\Models\Order;
+use App\Modules\Order\Models\Order;
 use App\Modules\Order\Repository\OrderRepository;
 use Illuminate\Support\Arr;
 

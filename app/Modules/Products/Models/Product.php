@@ -14,10 +14,10 @@ use App\Modules\Category\Models\Category;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\CartItem;
-use App\Models\OrderItem;
 use App\Models\OutfitSetItem;
 use App\Models\Recommendation;
 use App\Modules\Products\Models\ProductImage;
+use App\Modules\Order\Models\OrderItem;
 
 /**
  * Class Product
@@ -41,7 +41,7 @@ use App\Modules\Products\Models\ProductImage;
  * @property Brand $brand
  * @property Category $category
  * @property Collection|\App\Models\CartItem[] $cart_items
- * @property Collection|\App\Models\OrderItem[] $order_items
+ * @property Collection|\App\Modules\Order\Models\OrderItem[] $order_items
  * @property Collection|\App\Models\OutfitSetItem[] $outfit_set_items
  * @property Collection|\App\Models\Recommendation[] $recommendations
  * @property Collection|ProductImage[] $images
@@ -104,12 +104,12 @@ class Product extends Model
 	}
 
 	// New relations for multiple images
-	public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
+	public function images(): HasMany
 	{
 		return $this->hasMany(ProductImage::class)->orderBy('sort_order')->orderBy('created_at');
 	}
 
-	public function primaryImage(): \Illuminate\Database\Eloquent\Relations\HasOne
+	public function primaryImage(): HasOne
 	{
 		return $this->hasOne(ProductImage::class)->where('is_primary', true);
 	}

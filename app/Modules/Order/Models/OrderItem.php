@@ -4,7 +4,7 @@
  * Created by Reliese Model.
  */
 
-namespace App\Models;
+namespace App\Modules\Order\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Modules\Products\Models\Product;

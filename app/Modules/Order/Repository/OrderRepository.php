@@ -2,7 +2,7 @@
 
 namespace App\Modules\Order\Repository;
 
-use App\Models\Order;
+use App\Modules\Order\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 
 class OrderRepository
