@@ -13,4 +13,7 @@
     <div class="container mx-auto mt-8 mb-24">
         @include('customer.components.featured-products')
     </div>
+    <div class="container mx-auto mt-8 mb-24">
+        @include('customer.components.testimonials')
+    </div>
 @endsection
