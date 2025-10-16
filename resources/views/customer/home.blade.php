@@ -22,4 +22,7 @@
     <div class="container mx-auto mt-8 mb-24">
         @include('customer.components.faq')
     </div>
+    <div class="mx-auto mt-8">
+        @include('customer.components.footer')
+    </div>
 @endsection
