@@ -18,6 +18,9 @@ use App\Modules\Order\Controllers\OrderController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', function () {
+    return view('customer.home');
+});
 
 // All admin routes under /admins
 Route::prefix('admins')->as('admin.')->group(function () {
