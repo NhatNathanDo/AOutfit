@@ -1,4 +1,4 @@
-<nav class="navbar bg-base-100">
+<nav class="navbar bg-black">
   <div class="relative w-full p-1">
     <span aria-hidden class="pointer-events-none absolute left-60 top-1/2 -translate-y-1/2 h-13 border-l border-dashed border-base-content/30 hidden md:flex
     after:content-[''] after:absolute after:-bottom-1 after:right-10 after:w-13 after:border-t after:border-dashed after:border-base-content/30"></span>

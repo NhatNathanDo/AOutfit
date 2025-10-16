@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     </head>
     
-    <body class="font-['Roboto'] antialiased">
+    <body class="font-['Roboto'] antialiased bg-black">
         <div class="min-h-screen">
             @include('customer.components.navigation')
 
@@ -24,7 +24,6 @@
                 @yield('content')
             </main>
         </div>
-+
     </body>
 </html>
 
