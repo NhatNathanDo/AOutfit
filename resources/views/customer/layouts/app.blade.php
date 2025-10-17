@@ -25,5 +25,8 @@
             </main>
         </div>
     </body>
+    <footer class="mx-auto mt-8">
+        @include('customer.components.footer')
+    </footer>
 </html>
 

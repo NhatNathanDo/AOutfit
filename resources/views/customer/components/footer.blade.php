@@ -5,7 +5,7 @@
     ];
 @endphp
 
-<footer class="relative w-full text-white container mx-auto px-4 sm:px-6 lg:px-8">
+<footer class="relative w-full text-white mx-auto">
     <div class="relative w-full border border-dashed border-white/20 bg-black/90 rounded-[20px] overflow-hidden">
         {{-- Top ticker --}}
         <div class="border-b border-dashed border-white/10">
