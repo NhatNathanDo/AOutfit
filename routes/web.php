@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Modules\Products\Controllers\ProductController;
@@ -7,6 +8,8 @@ use App\Modules\Brand\Controllers\BrandController;
 use App\Modules\Category\Controllers\CategoryController;
 use App\Modules\Products\Controllers\ProductAiController;
 use App\Modules\Order\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +21,21 @@ use App\Modules\Order\Controllers\OrderController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/', function () {
     return view('customer.home');
 });
 
-// All admin routes under /admins
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
 Route::prefix('admins')->as('admin.')->group(function () {
     // Dashboard landing: GET /admins
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -75,3 +88,5 @@ Route::prefix('admins')->as('admin.')->group(function () {
         Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
     });
 });
+
+require __DIR__.'/auth.php';
