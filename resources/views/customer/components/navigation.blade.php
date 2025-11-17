@@ -1,4 +1,4 @@
-<nav class="navbar bg-black">
+<nav class="navbar bg-black sticky top-0 z-50">
   <div class="relative w-full p-1">
     <span aria-hidden class="pointer-events-none absolute left-60 top-1/2 -translate-y-1/2 h-13 border-l border-dashed border-base-content/30 hidden md:flex
     after:content-[''] after:absolute after:-bottom-1 after:right-10 after:w-13 after:border-t after:border-dashed after:border-base-content/30"></span>
@@ -26,7 +26,7 @@
             <a href="/" class="btn btn-neutral btn-soft btn-lg text-sm rounded-lg px-5">Trang chủ</a>
           </li>
           <li>
-            <a href="#" class="btn btn-lg text-sm rounded-lg px-5 btn-outline border-dashed btn-secondary">Sản phẩm</a>
+            <a href="{{ route('shop.index') }}" class="btn btn-lg text-sm rounded-lg px-5 btn-outline border-dashed btn-secondary">Sản phẩm</a>
           </li>
         </ul>
       </div>

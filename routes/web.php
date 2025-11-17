@@ -9,6 +9,7 @@ use App\Modules\Category\Controllers\CategoryController;
 use App\Modules\Products\Controllers\ProductAiController;
 use App\Modules\Order\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Customer\ProductBrowseController;
 
 
 /*
@@ -25,6 +26,11 @@ use App\Http\Controllers\ProfileController;
 Route::get('/', function () {
     return view('customer.home');
 });
+
+// Customer-facing product pages
+Route::get('/products', [ProductBrowseController::class, 'index'])->name('shop.index');
+Route::get('/products/suggest', [ProductBrowseController::class, 'suggest'])->name('shop.suggest');
+Route::get('/products/{slug}', [ProductBrowseController::class, 'show'])->name('shop.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
