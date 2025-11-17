@@ -1,63 +1,71 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Profile Information') }}
-        </h2>
+<section class="space-y-5">
+    <div class="space-y-1">
+        <h2 class="text-lg font-semibold tracking-wide">{{ __('Thông tin hồ sơ') }}</h2>
+        <p class="text-xs text-gray-400">{{ __('Cập nhật tên và email để cá nhân hóa trải nghiệm của bạn.') }}</p>
+    </div>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your account's profile information and email address.") }}
-        </p>
-    </header>
+    @if (session('status') === 'profile-updated')
+        <div class="alert alert-success text-sm">
+            <span class="icon-[tabler--check] mr-2"></span>
+            {{ __('Thông tin hồ sơ đã được lưu.') }}
+        </div>
+    @endif
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="space-y-6">
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        <div class="form-control w-full">
+            <label for="name" class="label">
+                <span class="label-text text-gray-300">{{ __('Họ và tên') }}</span>
+            </label>
+            <input id="name" name="name" type="text" value="{{ old('name', $user->name) }}" required autocomplete="name"
+                   class="input input-bordered w-full bg-black/50 border-neutral-700 text-white placeholder:text-gray-400 focus:border-neutral-400" />
+            @error('name')
+                <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+            @enderror
         </div>
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+        <div class="form-control w-full">
+            <label for="email" class="label">
+                <span class="label-text text-gray-300">{{ __('Email') }}</span>
+            </label>
+            <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required autocomplete="username"
+                   class="input input-bordered w-full bg-black/50 border-neutral-700 text-white placeholder:text-gray-400 focus:border-neutral-400" />
+            @error('email')
+                <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+            @enderror
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        {{ __('Your email address is unverified.') }}
-
-                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            {{ __('Click here to re-send the verification email.') }}
+                <div class="mt-3">
+                    <div class="alert alert-warning text-sm">
+                        <span class="icon-[tabler--alert-circle] mr-2"></span>
+                        {{ __('Địa chỉ email của bạn chưa được xác minh.') }}
+                        <button form="send-verification" class="ml-2 underline hover:opacity-80">
+                            {{ __('Gửi lại email xác minh') }}
                         </button>
-                    </p>
+                    </div>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
+                        <div class="alert alert-success text-sm mt-2">
+                            <span class="icon-[tabler--check] mr-2"></span>
+                            {{ __('Liên kết xác minh mới đã được gửi tới email của bạn.') }}
+                        </div>
                     @endif
                 </div>
             @endif
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
+        <div class="pt-1 flex items-center gap-4">
+            <button type="submit" class="btn h-10 px-6 text-neutral-900" style="background-color:#c7b293;">
+                <span class="icon-[tabler--device-floppy] mr-1"></span>{{ __('Lưu thay đổi') }}
+            </button>
             @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
+                <span class="text-xs text-green-400 flex items-center gap-1"><span class="icon-[tabler--check] text-green-400"></span>{{ __('Đã lưu') }}</span>
             @endif
         </div>
     </form>

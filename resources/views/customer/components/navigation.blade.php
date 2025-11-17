@@ -74,7 +74,7 @@
                   </div>
                 </div>
               </li>
-              <li class="mt-2"><a class="dropdown-item flex items-center gap-3 text-white/80" href="#"><span class="icon-[tabler--user] size-5"></span>Trang cá nhân</a></li>
+              <li class="mt-2"><a class="dropdown-item flex items-center gap-3 text-white/80" href="{{ route('profile.edit') }}"><span class="icon-[tabler--user] size-5"></span>Trang cá nhân</a></li>
               <li><a class="dropdown-item flex items-center gap-3 text-white/80" href="#"><span class="icon-[tabler--settings] size-5"></span>Cài đặt</a></li>
               <li><a class="dropdown-item flex items-center gap-3 text-white/80" href="#"><span class="icon-[tabler--file-invoice] size-5"></span>Hóa đơn</a></li>
               <li><a class="dropdown-item flex items-center gap-3 text-white/80" href="#"><span class="icon-[tabler--help-circle] size-5"></span>FAQs</a></li>
@@ -85,13 +85,24 @@
                   <button type="submit" class="btn btn-error btn-soft btn-block">{{ __('Đăng xuất') }}</button>
                 </form>
               </li>
-            @else
-              <li class="p-2 text-sm text-gray-300">Đăng nhập để trải nghiệm đầy đủ tính năng của AOutfit</li>
-              <li class="grid grid-cols-1 gap-2">
-                <a class="btn w-full text-neutral-900" style="background-color:#c7b293;" href="{{ route('login') }}">Đăng nhập</a>
-                <a class="btn btn-outline btn-secondary w-full" href="{{ route('register') }}">Đăng ký</a>
-              </li>
-            @endif
+           @else
+  <li class="grid gap-2 p-2">
+    <a 
+      href="{{ route('login') }}" 
+      class="w-full text-sm font-medium text-neutral-900 bg-[#c7b293] hover:bg-[#bca885] transition-all duration-200 rounded-xl py-2 text-center shadow-sm"
+    >
+      Đăng nhập
+    </a>
+
+    <a 
+      href="{{ route('register') }}" 
+      class="w-full text-sm font-medium border border-[#c7b293] text-[#c7b293] hover:bg-[#c7b293] hover:text-neutral-900 transition-all duration-200 rounded-xl py-2 text-center shadow-sm"
+    >
+      Đăng ký
+    </a>
+  </li>
+@endif
+
           </ul>
         </div>
       </div>
