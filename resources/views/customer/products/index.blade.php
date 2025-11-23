@@ -24,9 +24,14 @@
 
       <div class="relative w-full md:w-[520px]">
         <form action="{{ route('shop.index') }}" method="get" class="w-full">
-          <div class="w-full relative">
-            <span class="icon-[tabler--search] absolute left-4 top-1/2 -translate-y-1/2 size-5 text-white/70"></span>
-            <input id="plp-search" type="search" name="q" value="{{ e($q) }}" class="w-full rounded-full py-3 pl-12 pr-4 bg-neutral-900/80 text-white placeholder-white/60 border border-white/20 focus:outline-none focus:ring-2 focus:ring-[{{ $accent }}] focus:border-transparent" placeholder="Tìm kiếm sản phẩm..." autocomplete="off" />
+          <div class="relative flex items-center">
+            <span class="icon-[tabler--search] absolute left-4 top-1/2 -translate-y-1/2 size-5 text-white/60"></span>
+            <input id="plp-search" type="search" name="q" value="{{ e($q) }}" 
+                   class="input input-bordered w-full rounded-full pl-12 pr-14 h-12 bg-neutral-900/80 text-white placeholder-white/50 border-white/25 focus:outline-none focus:ring-2 focus:ring-[{{ $accent }}] focus:border-transparent"
+                   placeholder="Tìm kiếm sản phẩm..." autocomplete="off" />
+            @if($q)
+              <a href="{{ route('shop.index') }}" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white/80 text-xs">Xóa</a>
+            @endif
           </div>
         </form>
         <div id="search-suggest" class="absolute mt-2 w-full hidden rounded-2xl border border-white/15 bg-neutral-950/95 backdrop-blur shadow-xl overflow-hidden"></div>
@@ -159,38 +164,45 @@
         </div>
 
         <!-- Products grid -->
-        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
           @forelse($products as $product)
             @php
               $primary = $product->primaryImage?->url ?? optional($product->images->first())->url;
               $hover   = optional($product->images->skip(1)->first())->url;
-              $catName = $product->category->name ?? 'Womenswear';
-              $style   = $product->style ?: '—';
+              $catName = $product->category->name ?? 'Product';
+              $style   = $product->style ?: 'Standard';
             @endphp
-            <div class="h-full rounded-2xl border border-dashed border-white/20 bg-black text-white p-3 flex flex-col">
-              <div class="relative aspect-[4/5] rounded-xl overflow-hidden bg-neutral-900">
+            <div class="group flex flex-col gap-4 p-4 rounded-[2.5rem] border border-dashed border-white/10 hover:border-white/30 transition-colors">
+              <!-- Image Area -->
+              <a href="{{ route('shop.show', $product->slug) }}" class="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-neutral-800 ring-1 ring-white/5">
                 @if($primary)
-                  <img src="{{ $primary }}" alt="{{ $product->name }}" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0" loading="lazy" />
+                  <img src="{{ $primary }}" alt="{{ $product->name }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
                 @else
-                  <div class="absolute inset-0 grid place-items-center text-white/30"><span class="icon-[tabler--photo] size-8"></span></div>
+                  <div class="absolute inset-0 grid place-items-center text-white/20"><span class="icon-[tabler--photo] size-12"></span></div>
                 @endif
+                
                 @if($hover)
-                  <img src="{{ $hover }}" alt="{{ $product->name }}" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100" loading="lazy" />
+                  <img src="{{ $hover }}" alt="{{ $product->name }}" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-hover:scale-105" loading="lazy" />
                 @endif
-              </div>
+              </a>
 
-              <div class="mt-3 flex items-center justify-between">
-                <span class="px-2 py-1 rounded-full text-[11px] leading-none bg-white/10 text-white/80">{{ $catName }}</span>
-                <a class="btn btn-xs md:btn-sm btn-outline border-white/20 text-white hover:bg-white/10" href="{{ route('shop.show', $product->slug) }}">
-                  Shop Now <span class="icon-[tabler--arrow-up-right] size-4 ml-1"></span>
+              <!-- Action Row -->
+              <div class="flex items-center justify-between px-1">
+                <span class="rounded-full bg-neutral-900 px-4 py-1.5 text-xs font-medium text-neutral-400 border border-white/10">{{ $catName }}</span>
+                <a href="{{ route('shop.show', $product->slug) }}" class="flex items-center gap-1 rounded-full border border-white/20 px-4 py-1.5 text-xs font-medium text-white transition hover:bg-white hover:text-black hover:border-white">
+                  Shop Now <span class="icon-[tabler--arrow-up-right] size-3"></span>
                 </a>
               </div>
 
-              <h3 class="mt-3 text-[15px] md:text-base font-medium line-clamp-2">{{ $product->name }}</h3>
-
-              <div class="mt-auto pt-3 text-xs md:text-sm text-white/70 flex items-center gap-5">
-                <span>Fit: <span class="text-white/90">{{ $style }}</span></span>
-                <span>Price: <span class="text-white/90">{{ number_format($product->price, 0, ',', '.') }}₫</span></span>
+              <!-- Info Row -->
+              <div class="px-1">
+                <h3 class="text-lg font-bold text-white tracking-tight">
+                  <a href="{{ route('shop.show', $product->slug) }}">{{ $product->name }}</a>
+                </h3>
+                <div class="mt-1.5 flex items-center gap-4 text-sm text-neutral-500 font-mono">
+                  <span>Fit <span class="text-neutral-300">· {{ $style }}</span></span>
+                  <span>Price <span class="text-neutral-300">· {{ number_format($product->price, 0, ',', '.') }}₫</span></span>
+                </div>
               </div>
             </div>
           @empty
@@ -266,6 +278,61 @@
         const close = e.target.closest('[data-close-quick]');
         if(btn){ modal.classList.remove('hidden'); document.getElementById('quick-content').innerHTML = 'Đang phát triển'; }
         if(close){ modal.classList.add('hidden'); }
+      });
+    })();
+
+    // Add to cart buttons
+    (function(){
+      const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+      async function add(pid){
+        try {
+          const r = await fetch('/cart/items', {
+            method:'POST',
+            headers:{
+              'X-Requested-With':'XMLHttpRequest',
+              'Accept':'application/json',
+              'Content-Type':'application/x-www-form-urlencoded',
+              'X-CSRF-TOKEN': csrf || ''
+            },
+            credentials:'same-origin',
+            body:new URLSearchParams({product_id:pid, quantity:1})
+          });
+          if(r.status === 401){
+            console.warn('Cần đăng nhập để thêm vào giỏ');
+            toast('Vui lòng đăng nhập');
+            return;
+          }
+          if(!r.ok){
+            console.error(await r.text());
+            toast('Lỗi thêm sản phẩm');
+            return;
+          }
+          const cart = await r.json();
+          const badge = document.getElementById('cart-count');
+          if(badge){ badge.textContent = cart.count || ''; badge.classList.toggle('hidden', !cart.count); }
+          toast('Đã thêm vào giỏ');
+        } catch(e){
+          console.error(e);
+          toast('Lỗi mạng');
+        }
+      }
+      function toast(msg){
+        let box = document.getElementById('toast-box');
+        if(!box){
+          box = document.createElement('div');
+          box.id='toast-box';
+          box.className='fixed bottom-4 right-4 space-y-2 z-50';
+          document.body.appendChild(box);
+        }
+        const item = document.createElement('div');
+        item.className='px-4 py-2 rounded-xl bg-white/90 text-black text-sm shadow';
+        item.textContent = msg;
+        box.appendChild(item);
+        setTimeout(()=>{item.classList.add('opacity-0','scale-95','transition'); setTimeout(()=>item.remove(),400);},1800);
+      }
+      document.addEventListener('click', e=>{
+        const addBtn = e.target.closest('[data-add-cart]');
+        if(addBtn){ add(addBtn.getAttribute('data-add-cart')); }
       });
     })();
   </script>

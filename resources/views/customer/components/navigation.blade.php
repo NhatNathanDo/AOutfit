@@ -37,8 +37,9 @@
 
       <!-- Desktop actions -->
       <div class="navbar-end gap-2 hidden md:flex mb-3">
-        <a class="btn btn-neutral btn-soft btn-square btn-lg" href="#" aria-label="Cart">
+        <a class="relative btn btn-neutral btn-soft btn-square btn-lg" href="{{ route('cart.index') }}" aria-label="Cart">
           <span class="icon-[tabler--shopping-cart-filled] size-5"></span>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-[#c7b293] text-[#111] text-[11px] rounded-full h-5 min-w-5 flex items-center justify-center font-semibold hidden"></span>
         </a>
         <div class="dropdown dropdown-end relative inline-flex">
           @if(auth()->check())
@@ -109,8 +110,9 @@
 
       <!-- Mobile actions -->
   <div class="navbar-end flex md:hidden gap-2 mb-3">
-        <a class="btn btn-ghost btn-square" href="#" aria-label="Cart">
+        <a class="relative btn btn-ghost btn-square" href="{{ route('cart.index') }}" aria-label="Cart">
           <span class="icon-[tabler--shopping-cart] size-5 text-white"></span>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-[#c7b293] text-[#111] text-[11px] rounded-full h-5 min-w-5 flex items-center justify-center font-semibold hidden"></span>
         </a>
   <div class="dropdown dropdown-end relative inline-flex">
           <button id="dropdown-header-mobile" type="button" class="dropdown-toggle btn btn-ghost btn-square" aria-haspopup="menu" aria-expanded="false" aria-label="Account menu">

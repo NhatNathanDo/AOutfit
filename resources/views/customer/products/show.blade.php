@@ -10,7 +10,7 @@
       </div>
       <div class="flex items-center gap-2">
         <a href="{{ route('shop.index') }}" class="btn btn-sm rounded-full bg-white/10 text-white hover:bg-white/15">Back to shop</a>
-        <button class="btn btn-sm rounded-full" style="background-color: {{ $accent }}; color:#111;">Add to Cart</button>
+        <button class="btn btn-sm rounded-full" style="background-color: {{ $accent }}; color:#111;" data-add-cart="{{ $product->id }}">Add to Cart</button>
         <a href="#buy" class="btn btn-sm rounded-full btn-outline border-white/20 text-white hover:bg-white/10">Buy Now</a>
       </div>
     </div>
@@ -65,7 +65,7 @@
           </div>
 
           <div class="mt-4 flex items-center gap-2">
-            <button class="btn rounded-full flex-1" style="background-color: {{ $accent }}; color:#111;">Add to Cart</button>
+            <button class="btn rounded-full flex-1" style="background-color: {{ $accent }}; color:#111;" data-add-cart="{{ $product->id }}">Add to Cart</button>
             <button class="btn btn-outline border-white/20 rounded-full flex-1 text-white hover:bg-white/10">Add to Wishlist</button>
           </div>
 
@@ -142,4 +142,40 @@
       </div>
     </div>
   </div>
+  <script>
+    (function(){
+      const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+      async function add(pid){
+        try {
+          const r = await fetch('/cart/items', {
+            method:'POST',
+            headers:{
+              'X-Requested-With':'XMLHttpRequest',
+              'Accept':'application/json',
+              'Content-Type':'application/x-www-form-urlencoded',
+              'X-CSRF-TOKEN': csrf || ''
+            },
+            credentials:'same-origin',
+            body:new URLSearchParams({product_id:pid, quantity:1})
+          });
+          if(r.status===401){ toast('Vui lòng đăng nhập'); return; }
+          if(!r.ok){ console.error(await r.text()); toast('Lỗi thêm sản phẩm'); return; }
+          const cart = await r.json();
+          const badge = document.getElementById('cart-count');
+          if(badge){ badge.textContent = cart.count || ''; badge.classList.toggle('hidden', !cart.count); }
+          toast('Đã thêm vào giỏ');
+        }catch(e){ console.error(e); toast('Lỗi mạng'); }
+      }
+      function toast(msg){
+        let box = document.getElementById('toast-box');
+        if(!box){ box=document.createElement('div'); box.id='toast-box'; box.className='fixed bottom-4 right-4 space-y-2 z-50'; document.body.appendChild(box); }
+        const item=document.createElement('div'); item.className='px-4 py-2 rounded-xl bg-white/90 text-black text-sm shadow'; item.textContent=msg; box.appendChild(item);
+        setTimeout(()=>{item.classList.add('opacity-0','scale-95','transition'); setTimeout(()=>item.remove(),400);},1800);
+      }
+      document.addEventListener('click', e=>{
+        const btn = e.target.closest('[data-add-cart]');
+        if(btn){ add(btn.getAttribute('data-add-cart')); }
+      });
+    })();
+  </script>
 @endsection
