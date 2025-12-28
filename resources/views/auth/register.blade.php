@@ -12,12 +12,12 @@
                     <div class="p-8 md:p-10 border-b md:border-b-0 md:border-r border-base-content/10 flex flex-col justify-center gap-4 bg-gradient-to-b from-black to-black/50">
                         <div>
                             <h1 class="text-3xl md:text-4xl font-bold">{{ __('Create your account') }}</h1>
-                            <p class="mt-2 text-gray-300">{{ __('Join AOutfit for personalized recommendations and exclusive perks.') }}</p>
+                            <p class="mt-2 text-gray-300">{{ __('Tham gia AOutfit để nhận được những gợi ý cá nhân hóa và đặc quyền độc quyền.') }}</p>
                         </div>
                         <ul class="space-y-3 text-gray-300">
-                            <li class="flex items-start gap-3"><span class="icon-[tabler--stars] text-[#c7b293]"></span><span>{{ __('Exclusive member discounts') }}</span></li>
-                            <li class="flex items-start gap-3"><span class="icon-[tabler--heart] text-[#c7b293]"></span><span>{{ __('Save your favorite outfits') }}</span></li>
-                            <li class="flex items-start gap-3"><span class="icon-[tabler--bolt] text-[#c7b293]"></span><span>{{ __('AI-powered styling tips') }}</span></li>
+                            <li class="flex items-start gap-3"><span class="icon-[tabler--stars] text-[#c7b293]"></span><span>{{ __('Giảm giá độc quyền cho thành viên') }}</span></li>
+                            <li class="flex items-start gap-3"><span class="icon-[tabler--heart] text-[#c7b293]"></span><span>{{ __('Lưu trang phục yêu thích của bạn') }}</span></li>
+                            <li class="flex items-start gap-3"><span class="icon-[tabler--bolt] text-[#c7b293]"></span><span>{{ __('Mẹo phối đồ thông minh từ AI') }}</span></li>
                         </ul>
                     </div>
 
@@ -27,7 +27,7 @@
                             @csrf
 
                             <div class="form-control w-full">
-                                <label for="name" class="label"><span class="label-text text-gray-300">{{ __('Name') }}</span></label>
+                                <label for="name" class="label"><span class="label-text text-gray-300">{{ __('Họ và tên') }}</span></label>
                                 <div class="relative">
                                     <span class="icon-[tabler--user] absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></span>
                                     <input id="name" type="text" name="name" value="{{ old('name') }}" autocomplete="name" required autofocus
@@ -47,7 +47,7 @@
                             </div>
 
                             <div class="form-control w-full mt-4">
-                                <label for="password" class="label"><span class="label-text text-gray-300">{{ __('Password') }}</span></label>
+                                <label for="password" class="label"><span class="label-text text-gray-300">{{ __('Mật khẩu') }}</span></label>
                                 <div class="relative">
                                     <span class="icon-[tabler--lock] absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></span>
                                     <input id="password" type="password" name="password" autocomplete="new-password" required
@@ -61,13 +61,13 @@
                                     <div class="w-full bg-neutral-800 h-1 rounded">
                                         <div id="pwd-strength" class="h-1 rounded bg-red-500 w-1/6 transition-all"></div>
                                     </div>
-                                    <p id="pwd-hint" class="mt-2 text-xs text-gray-400">{{ __('Use 8+ chars with a mix of letters, numbers, and symbols.') }}</p>
+                                    <p id="pwd-hint" class="mt-2 text-xs text-gray-400">{{ __('Sử dụng 8 ký tự trở lên với sự kết hợp của chữ cái, số và ký hiệu.') }}</p>
                                 </div>
                                 @error('password')<p class="mt-2 text-sm text-red-400">{{ $message }}</p>@enderror
                             </div>
 
                             <div class="form-control w-full mt-4">
-                                <label for="password_confirmation" class="label"><span class="label-text text-gray-300">{{ __('Confirm Password') }}</span></label>
+                                <label for="password_confirmation" class="label"><span class="label-text text-gray-300">{{ __('Xác nhận mật khẩu') }}</span></label>
                                 <div class="relative">
                                     <span class="icon-[tabler--shield-lock] absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></span>
                                     <input id="password_confirmation" type="password" name="password_confirmation" autocomplete="new-password" required
@@ -81,10 +81,10 @@
                             </div>
 
                             <div class="mt-6">
-                                <button type="submit" class="btn w-full h-11 text-neutral-900" style="background-color:#c7b293;">{{ __('Register') }}</button>
+                                <button type="submit" class="btn w-full h-11 text-neutral-900" style="background-color:#c7b293;">{{ __('Đăng ký') }}</button>
                             </div>
 
-                            <div class="divider my-6 text-gray-400">{{ __('or continue with') }}</div>
+                            <div class="divider my-6 text-gray-400">{{ __('hoặc tiếp tục với') }}</div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <a href="#" class="btn btn-outline btn-secondary w-full">
                                     <span class="icon-[tabler--brand-google] mr-2"></span> Google
@@ -95,8 +95,8 @@
                             </div>
 
                             <p class="mt-6 text-center text-sm text-gray-300">
-                                {{ __('Already registered?') }}
-                                <a href="{{ route('login') }}" class="font-medium text-white underline hover:opacity-80">{{ __('Log in') }}</a>
+                                {{ __('Bạn đã đăng ký?') }}
+                                <a href="{{ route('login') }}" class="font-medium text-white underline hover:opacity-80">{{ __('Đăng nhập') }}</a>
                             </p>
                         </form>
                     </div>

@@ -11,13 +11,13 @@
                     <!-- Left: Promo/Brand -->
                     <div class="p-8 md:p-10 border-b md:border-b-0 md:border-r border-base-content/10 flex flex-col justify-center gap-4 bg-gradient-to-b from-black to-black/50">
                         <div>
-                            <h1 class="text-3xl md:text-4xl font-bold">{{ __('Welcome back') }}</h1>
-                            <p class="mt-2 text-gray-300">{{ __('Sign in to continue your shopping journey with AOutfit.') }}</p>
+                            <h1 class="text-3xl md:text-4xl font-bold">{{ __('Chào mừng bạn trở lại') }}</h1>
+                            <p class="mt-2 text-gray-300">{{ __('Đăng nhập để tiếp tục hành trình mua sắm của bạn với AOutfit.') }}</p>
                         </div>
                         <ul class="space-y-3 text-gray-300">
-                            <li class="flex items-start gap-3"><span class="icon-[tabler--sparkles] text-[#c7b293]"></span><span>{{ __('Curated outfits just for you') }}</span></li>
-                            <li class="flex items-start gap-3"><span class="icon-[tabler--truck] text-[#c7b293]"></span><span>{{ __('Fast delivery and easy returns') }}</span></li>
-                            <li class="flex items-start gap-3"><span class="icon-[tabler--lock] text-[#c7b293]"></span><span>{{ __('Secure checkout and saved preferences') }}</span></li>
+                            <li class="flex items-start gap-3"><span class="icon-[tabler--sparkles] text-[#c7b293]"></span><span>{{ __('Outfit được chọn lọc chỉ dành cho bạn') }}</span></li>
+                            <li class="flex items-start gap-3"><span class="icon-[tabler--truck] text-[#c7b293]"></span><span>{{ __('Giao hàng nhanh chóng và dễ dàng trả hàng') }}</span></li>
+                            <li class="flex items-start gap-3"><span class="icon-[tabler--lock] text-[#c7b293]"></span><span>{{ __('Thanh toán an toàn và lưu trữ tùy chọn') }}</span></li>
                         </ul>
                     </div>
 
@@ -49,7 +49,7 @@
 
                             <div class="form-control w-full mt-4">
                                 <label for="password" class="label">
-                                    <span class="label-text text-gray-300">{{ __('Password') }}</span>
+                                    <span class="label-text text-gray-300">{{ __('Mật khẩu') }}</span>
                                 </label>
                                 <div class="relative">
                                     <span class="icon-[tabler--lock] absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></span>
@@ -68,10 +68,10 @@
                             <div class="mt-3 flex items-center justify-between">
                                 <label for="remember_me" class="flex items-center gap-2">
                                     <input id="remember_me" name="remember" type="checkbox" class="checkbox checkbox-sm border-neutral-700" />
-                                    <span class="text-sm text-gray-300">{{ __('Remember me') }}</span>
+                                    <span class="text-sm text-gray-300">{{ __('Nhớ tôi') }}</span>
                                 </label>
                                 @if (Route::has('password.request'))
-                                    <a class="text-sm text-gray-300 hover:text-white" href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
+                                    <a class="text-sm text-gray-300 hover:text-white" href="{{ route('password.request') }}">{{ __('Quên mật khẩu?') }}</a>
                                 @endif
                             </div>
 
@@ -81,7 +81,7 @@
                                 </button>
                             </div>
 
-                            <div class="divider my-6 text-gray-400">{{ __('or continue with') }}</div>
+                            <div class="divider my-6 text-gray-400">{{ __('hoặc tiếp tục với') }}</div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <a href="#" class="btn btn-outline btn-secondary w-full">
@@ -93,8 +93,8 @@
                             </div>
 
                             <p class="mt-6 text-center text-sm text-gray-300">
-                                {{ __("Don't have an account?") }}
-                                <a href="{{ route('register') }}" class="font-medium text-white underline hover:opacity-80">{{ __('Register') }}</a>
+                                {{ __('Bạn chưa có tài khoản?') }}
+                                <a href="{{ route('register') }}" class="font-medium text-white underline hover:opacity-80">{{ __('Đăng ký') }}</a>
                             </p>
                         </form>
                     </div>

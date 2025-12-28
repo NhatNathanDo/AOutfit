@@ -9,6 +9,8 @@ use App\Modules\Category\Controllers\CategoryController;
 use App\Modules\Products\Controllers\ProductAiController;
 use App\Modules\Order\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Customer\ProductBrowseController;
+use App\Http\Controllers\Customer\CartController;
 
 
 /*
@@ -24,6 +26,24 @@ use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('customer.home');
+});
+
+// Customer-facing product pages
+Route::get('/products', [ProductBrowseController::class, 'index'])->name('shop.index');
+Route::get('/products/suggest', [ProductBrowseController::class, 'suggest'])->name('shop.suggest');
+Route::get('/products/{slug}', [ProductBrowseController::class, 'show'])->name('shop.show');
+
+// Authenticated cart endpoints
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/items', [CartController::class, 'store'])->name('cart.items.store');
+    Route::patch('/cart/items/{id}', [CartController::class, 'update'])->name('cart.items.update');
+    Route::delete('/cart/items/{id}', [CartController::class, 'destroy'])->name('cart.items.destroy');
+    Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+
+    // Checkout
+    Route::get('/checkout', [App\Http\Controllers\Customer\CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [App\Http\Controllers\Customer\CheckoutController::class, 'store'])->name('checkout.store');
 });
 
 Route::get('/dashboard', function () {

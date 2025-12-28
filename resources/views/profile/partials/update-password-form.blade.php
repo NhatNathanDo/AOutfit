@@ -1,48 +1,57 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Update Password') }}
-        </h2>
+<section class="space-y-5">
+    <div class="space-y-1">
+        <h2 class="text-lg font-semibold tracking-wide">{{ __('Đổi mật khẩu') }}</h2>
+        <p class="text-xs text-gray-400">{{ __('Hãy sử dụng mật khẩu mạnh và duy nhất cho tài khoản của bạn.') }}</p>
+    </div>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
-        </p>
-    </header>
+    @if (session('status') === 'password-updated')
+        <div class="alert alert-success text-sm">
+            <span class="icon-[tabler--check] mr-2"></span>
+            {{ __('Mật khẩu đã được cập nhật.') }}
+        </div>
+    @endif
 
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('password.update') }}" class="space-y-6">
         @csrf
         @method('put')
 
-        <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
-        </div>
-
-        <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
-        </div>
-
-        <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
-            @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
+        <div class="form-control w-full">
+            <label for="update_password_current_password" class="label">
+                <span class="label-text text-gray-300">{{ __('Mật khẩu hiện tại') }}</span>
+            </label>
+            <input id="update_password_current_password" name="current_password" type="password" autocomplete="current-password"
+                   class="input input-bordered w-full bg-black/50 border-neutral-700 text-white placeholder:text-gray-400 focus:border-neutral-400" />
+            @if ($errors->updatePassword->has('current_password'))
+                <p class="mt-2 text-sm text-red-400">{{ $errors->updatePassword->first('current_password') }}</p>
             @endif
+        </div>
+
+        <div class="form-control w-full">
+            <label for="update_password_password" class="label">
+                <span class="label-text text-gray-300">{{ __('Mật khẩu mới') }}</span>
+            </label>
+            <input id="update_password_password" name="password" type="password" autocomplete="new-password"
+                   class="input input-bordered w-full bg-black/50 border-neutral-700 text-white placeholder:text-gray-400 focus:border-neutral-400" />
+            @if ($errors->updatePassword->has('password'))
+                <p class="mt-2 text-sm text-red-400">{{ $errors->updatePassword->first('password') }}</p>
+            @endif
+        </div>
+
+        <div class="form-control w-full">
+            <label for="update_password_password_confirmation" class="label">
+                <span class="label-text text-gray-300">{{ __('Xác nhận mật khẩu') }}</span>
+            </label>
+            <input id="update_password_password_confirmation" name="password_confirmation" type="password" autocomplete="new-password"
+                   class="input input-bordered w-full bg-black/50 border-neutral-700 text-white placeholder:text-gray-400 focus:border-neutral-400" />
+            @if ($errors->updatePassword->has('password_confirmation'))
+                <p class="mt-2 text-sm text-red-400">{{ $errors->updatePassword->first('password_confirmation') }}</p>
+            @endif
+        </div>
+
+        <div class="pt-1">
+            <button type="submit" class="btn h-10 px-6 text-neutral-900" style="background-color:#c7b293;">
+                <span class="icon-[tabler--device-floppy] mr-1"></span>{{ __('Lưu thay đổi') }}
+            </button>
         </div>
     </form>
 </section>

@@ -26,10 +26,29 @@ class ProductRepository
             });
         }
 
+        // Simple field filters (support scalar or array)
         foreach (['category_id', 'brand_id', 'gender'] as $field) {
             if (!empty($filters[$field])) {
-                $query->where($field, $filters[$field]);
+                if (is_array($filters[$field])) {
+                    $query->whereIn($field, $filters[$field]);
+                } else {
+                    $query->where($field, $filters[$field]);
+                }
             }
+        }
+
+        // Color facet (multi-select supported)
+        if (!empty($filters['color'])) {
+            if (is_array($filters['color'])) {
+                $query->whereIn('color', array_filter($filters['color']));
+            } else {
+                $query->where('color', $filters['color']);
+            }
+        }
+
+        // In stock toggle
+        if (!empty($filters['in_stock'])) {
+            $query->where('stock', '>', 0);
         }
 
         if (!empty($filters['min_price'])) {
@@ -41,12 +60,17 @@ class ProductRepository
 
         // Sorting
         if (!empty($filters['sort'])) {
-            // e.g., "price:asc" or "created_at:desc"
-            [$column, $direction] = array_pad(explode(':', $filters['sort'], 2), 2, 'asc');
-            $allowed = ['name', 'price', 'created_at', 'updated_at', 'stock'];
-            $column = in_array($column, $allowed, true) ? $column : 'created_at';
-            $direction = strtolower($direction) === 'desc' ? 'desc' : 'asc';
-            $query->orderBy($column, $direction);
+            // Special sorts
+            if ($filters['sort'] === 'best_seller') {
+                $query->withCount('order_items')->orderBy('order_items_count', 'desc');
+            } else {
+                // e.g., "price:asc" or "created_at:desc"
+                [$column, $direction] = array_pad(explode(':', $filters['sort'], 2), 2, 'asc');
+                $allowed = ['name', 'price', 'created_at', 'updated_at', 'stock'];
+                $column = in_array($column, $allowed, true) ? $column : 'created_at';
+                $direction = strtolower($direction) === 'desc' ? 'desc' : 'asc';
+                $query->orderBy($column, $direction);
+            }
         } else {
             $query->orderBy('created_at', 'desc');
         }

@@ -1,4 +1,4 @@
-<nav class="navbar bg-black">
+<nav class="navbar bg-black sticky top-0 z-50">
   <div class="relative w-full p-1">
     <span aria-hidden class="pointer-events-none absolute left-60 top-1/2 -translate-y-1/2 h-13 border-l border-dashed border-base-content/30 hidden md:flex
     after:content-[''] after:absolute after:-bottom-1 after:right-10 after:w-13 after:border-t after:border-dashed after:border-base-content/30"></span>
@@ -26,7 +26,7 @@
             <a href="/" class="btn btn-neutral btn-soft btn-lg text-sm rounded-lg px-5">Trang chủ</a>
           </li>
           <li>
-            <a href="#" class="btn btn-lg text-sm rounded-lg px-5 btn-outline border-dashed btn-secondary">Sản phẩm</a>
+            <a href="{{ route('shop.index') }}" class="btn btn-lg text-sm rounded-lg px-5 btn-outline border-dashed btn-secondary">Sản phẩm</a>
           </li>
         </ul>
       </div>
@@ -37,8 +37,9 @@
 
       <!-- Desktop actions -->
       <div class="navbar-end gap-2 hidden md:flex mb-3">
-        <a class="btn btn-neutral btn-soft btn-square btn-lg" href="#" aria-label="Cart">
+        <a class="relative btn btn-neutral btn-soft btn-square btn-lg" href="{{ route('cart.index') }}" aria-label="Cart">
           <span class="icon-[tabler--shopping-cart-filled] size-5"></span>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-[#c7b293] text-[#111] text-[11px] rounded-full h-5 min-w-5 flex items-center justify-center font-semibold hidden"></span>
         </a>
         <div class="dropdown dropdown-end relative inline-flex">
           @if(auth()->check())
@@ -74,7 +75,7 @@
                   </div>
                 </div>
               </li>
-              <li class="mt-2"><a class="dropdown-item flex items-center gap-3 text-white/80" href="#"><span class="icon-[tabler--user] size-5"></span>Trang cá nhân</a></li>
+              <li class="mt-2"><a class="dropdown-item flex items-center gap-3 text-white/80" href="{{ route('profile.edit') }}"><span class="icon-[tabler--user] size-5"></span>Trang cá nhân</a></li>
               <li><a class="dropdown-item flex items-center gap-3 text-white/80" href="#"><span class="icon-[tabler--settings] size-5"></span>Cài đặt</a></li>
               <li><a class="dropdown-item flex items-center gap-3 text-white/80" href="#"><span class="icon-[tabler--file-invoice] size-5"></span>Hóa đơn</a></li>
               <li><a class="dropdown-item flex items-center gap-3 text-white/80" href="#"><span class="icon-[tabler--help-circle] size-5"></span>FAQs</a></li>
@@ -85,21 +86,33 @@
                   <button type="submit" class="btn btn-error btn-soft btn-block">{{ __('Đăng xuất') }}</button>
                 </form>
               </li>
-            @else
-              <li class="p-2 text-sm text-gray-300">Đăng nhập để trải nghiệm đầy đủ tính năng của AOutfit</li>
-              <li class="grid grid-cols-1 gap-2">
-                <a class="btn w-full text-neutral-900" style="background-color:#c7b293;" href="{{ route('login') }}">Đăng nhập</a>
-                <a class="btn btn-outline btn-secondary w-full" href="{{ route('register') }}">Đăng ký</a>
-              </li>
-            @endif
+           @else
+  <li class="grid gap-2 p-2">
+    <a 
+      href="{{ route('login') }}" 
+      class="w-full text-sm font-medium text-neutral-900 bg-[#c7b293] hover:bg-[#bca885] transition-all duration-200 rounded-xl py-2 text-center shadow-sm"
+    >
+      Đăng nhập
+    </a>
+
+    <a 
+      href="{{ route('register') }}" 
+      class="w-full text-sm font-medium border border-[#c7b293] text-[#c7b293] hover:bg-[#c7b293] hover:text-neutral-900 transition-all duration-200 rounded-xl py-2 text-center shadow-sm"
+    >
+      Đăng ký
+    </a>
+  </li>
+@endif
+
           </ul>
         </div>
       </div>
 
       <!-- Mobile actions -->
   <div class="navbar-end flex md:hidden gap-2 mb-3">
-        <a class="btn btn-ghost btn-square" href="#" aria-label="Cart">
+        <a class="relative btn btn-ghost btn-square" href="{{ route('cart.index') }}" aria-label="Cart">
           <span class="icon-[tabler--shopping-cart] size-5 text-white"></span>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-[#c7b293] text-[#111] text-[11px] rounded-full h-5 min-w-5 flex items-center justify-center font-semibold hidden"></span>
         </a>
   <div class="dropdown dropdown-end relative inline-flex">
           <button id="dropdown-header-mobile" type="button" class="dropdown-toggle btn btn-ghost btn-square" aria-haspopup="menu" aria-expanded="false" aria-label="Account menu">

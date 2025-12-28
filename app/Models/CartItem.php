@@ -7,6 +7,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Helpers\HasUuid;
+use App\Modules\Products\Models\Product;
 
 /**
  * Class CartItem
@@ -27,6 +29,7 @@ class CartItem extends Model
 	protected $table = 'cart_items';
 	public $incrementing = false;
 	public $timestamps = false;
+	use HasUuid;
 
 	protected $casts = [
 		'quantity' => 'int',
@@ -47,6 +50,6 @@ class CartItem extends Model
 
 	public function product()
 	{
-		return $this->belongsTo(Product::class);
+		return $this->belongsTo(Product::class, 'product_id');
 	}
 }
